@@ -41,8 +41,8 @@ angular.module('myApp.controllers', [])
         });
     });
 
-    $scope.updateSiteInfo = function (e, leafletEvent) {
-     var properties = leafletEvent.target.feature.properties,
+    $scope.updateSiteInfo = function (feature) {
+     var properties = feature.properties,
         provider = "img/raleigh.png";
       switch (properties.provider) {
         case "Time Warner Cable":
@@ -65,22 +65,18 @@ angular.module('myApp.controllers', [])
       $scope.callDrawsvg = function (speed, path) {
         drawsvg(speed, path);
       };
-      // var timer = setInterval(function () {
-      //  $scope.proposed += 10;
-      //  if ($scope.proposed === 1000) {
-      //    clearInterval(timer)
-      //  }
-      // }, 1);
-
-
       $scope.callDrawsvg(properties.dl_fut, document.querySelector('.proposed-dl-line path'));
       $scope.callDrawsvg(properties.dl_curr, document.querySelector('.current-dl-line path'));
       $scope.callDrawsvg(properties.ul_fut, document.querySelector('.proposed-ul-line path'));
       $scope.callDrawsvg(properties.ul_curr, document.querySelector('.current-ul-line path'));
     };
 
-    $scope.$on('leafletDirectiveMap.geojsonMouseover', $scope.updateSiteInfo);
-    $scope.$on('leafletDirectiveMap.geojsonClick', $scope.updateSiteInfo);
+    $scope.$on('leafletDirectiveMap.geojsonMouseover', function (ev, leafletEvent) {
+      $scope.updateSiteInfo(leafletEvent.target.feature)
+    });
+    $scope.$on('leafletDirectiveMap.geojsonClick', function (ev, featureSelected, leafletEvent) {
+      $scope.updateSiteInfo(featureSelected);
+    });
 
 
   }]);
