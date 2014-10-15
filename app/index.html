@@ -38,22 +38,43 @@
   <div style="height:100%;width:100%;" ng-controller="MapController">
     <leaflet id="map" center="raleigh" tiles="tiles" geojson="geojson"></leaflet> 
     <div id="info">
-      <span class="lead">{{properties.Site}}</span>
-      <p>Proposed: {{proposed}}mbps
-      </p>
-      <svg class="proposed-line" height="5px">
-        <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-      </svg>
-      <p>Current: {{current}}mbps</p>
-      <svg class="current-line" height="5px">
-        <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-      </svg>
-<!--       <graph data="graphData" width="100%" height="150px" orientation="horizontal">
-        <x field="Status"></x>
-        <y field="Speed"></y>
-        <legend></legend>
-        <bar field="Status"></bar>
-      </graph> -->
+      <div class="row">
+        <div class="col-sm-6">
+          <span class="lead">{{site}}</span>
+          <p><img class="logo" ng-src="{{provider}}"/></p>
+          <p>Current Cost: ${{currentCost}}/month</p>
+          <p>Proposed Cost: ${{futureCost}}/month</p>
+        </div>
+        <div class="col-sm-6">
+
+          <span><u>Proposed</u>
+          </span>
+          <br/>
+          <span>Download: {{proposed_dl}}mbps</span>
+          <svg class="proposed-dl-line" height="5px">
+            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+          </svg>
+          <br/>
+          <span>Upload: {{proposed_ul}}mbps</span>
+          <svg class="proposed-ul-line" height="5px">
+            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+          </svg>
+          <p/>
+          <span><u>Current</u>
+          </span>
+          <br/>
+          <span>Download: {{current_dl}}mbps</span>
+          <svg class="current-dl-line" height="5px">
+            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+          </svg>
+          <br/>
+          <span>Upload: {{current_ul}}mbps</span>
+          <svg class="current-ul-line" height="5px">
+            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+          </svg>          
+        </div>
+      </div>
+
     </div>
   </div>
   <!-- In production use:
