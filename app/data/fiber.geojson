@@ -118,4 +118,8 @@
 { "type": "Feature", "properties": { "site": "Wells Fargo", "address": "150 Fayetteville St", "status": "Planned Stage 1", "fiber_stra": "Unknown", "bandwidth": "High", "provider": "AT&T", "cost_curr": 347, "dl_curr": 8, "ul_curr": 8, "cost_fut": 1500, "dl_fut": 1000, "ul_fut": 1000 }, "geometry": { "type": "Point", "coordinates": [ -78.639662465168939, 35.778645294943658 ] } },
 { "type": "Feature", "properties": { "site": "Raleigh Fire Department Station 23", "address": "8312 Pinecrest Rd", "status": "Planned Stage 1", "fiber_stra": "Unknown", "bandwidth": "High", "provider": "AT&T", "cost_curr": 636, "dl_curr": 50, "ul_curr": 50, "cost_fut": 1500, "dl_fut": 1000, "ul_fut": 1000 }, "geometry": { "type": "Point", "coordinates": [ -78.726735371146987, 35.896941522105863 ] } }
 ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fb502483bd0a20b8f9a354a8994c3e04e3bafb2b
