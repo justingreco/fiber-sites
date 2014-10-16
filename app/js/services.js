@@ -25,6 +25,7 @@ angular.module('myApp.services', []).
 		var time = 1000/speed;
 		if (speed === 0) {
 			time = 0;
+			path.style.display = 'none';
 		}
 		path.style.transition = path.style.WebkitTransition =
 		  'stroke-dashoffset '+time+'s ease-in-out';
