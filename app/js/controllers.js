@@ -4,17 +4,17 @@
 
 angular.module('myApp.controllers', [])
   .controller('MapController', ['$scope', '$http', 'leafletData', 'drawsvg', function($scope, $http, leafletData, drawsvg) {
-  	angular.extend($scope, {
-  		raleigh: {
-  			lat: 35.83,
-  			lng: -78.6436,
-  			zoom: 11
-  		},
-  		tiles: {
-  			url: 'http://a.tiles.mapbox.com/v3/examples.3hqcl3di/{z}/{x}/{y}.png'
-  		}
-  	});
-  	$http.get("data/fiber.geojson").success(function(data, status) {
+    angular.extend($scope, {
+      raleigh: {
+        lat: 35.83,
+        lng: -78.6436,
+        zoom: 11
+      },
+      tiles: {
+        url: 'http://a.tiles.mapbox.com/v3/examples.3hqcl3di/{z}/{x}/{y}.png'
+      }
+    });
+    $http.get("data/fiber.geojson").success(function(data, status) {
 
         angular.extend($scope, {
             geojson: {
@@ -40,8 +40,9 @@ angular.module('myApp.controllers', [])
             }
         });
     });
-    $scope.$on('leafletDirectiveMap.geojsonMouseover', function (e, leafletEvent) {
-      var properties = leafletEvent.target.feature.properties,
+
+    $scope.updateSiteInfo = function (feature) {
+     var properties = feature.properties,
         provider = "img/raleigh.png";
       switch (properties.provider) {
         case "Time Warner Cable":
@@ -51,32 +52,30 @@ angular.module('myApp.controllers', [])
           provider = "img/att.png";
         break;
       }
-    	angular.extend($scope, {
+      angular.extend($scope, {
       provider: provider,
-			site: properties.site,
-			proposed_dl: properties.dl_fut,
-			current_dl: properties.dl_curr,
+      site: properties.site,
+      proposed_dl: properties.dl_fut,
+      current_dl: properties.dl_curr,
       proposed_ul: properties.ul_fut,
       current_ul: properties.ul_curr,
       currentCost: properties.cost_curr,
       futureCost: properties.cost_fut
-    	});
-    	$scope.callDrawsvg = function (speed, path) {
-    		drawsvg(speed, path);
-    	};
-    	// var timer = setInterval(function () {
-	    // 	$scope.proposed += 10;
-	    // 	if ($scope.proposed === 1000) {
-	    // 		clearInterval(timer)
-	    // 	}
-    	// }, 1);
-
-
-    	$scope.callDrawsvg(properties.dl_fut, document.querySelector('.proposed-dl-line path'));
-    	$scope.callDrawsvg(properties.dl_curr, document.querySelector('.current-dl-line path'));
+      });
+      $scope.callDrawsvg = function (speed, path) {
+        drawsvg(speed, path);
+      };
+      $scope.callDrawsvg(properties.dl_fut, document.querySelector('.proposed-dl-line path'));
+      $scope.callDrawsvg(properties.dl_curr, document.querySelector('.current-dl-line path'));
       $scope.callDrawsvg(properties.ul_fut, document.querySelector('.proposed-ul-line path'));
       $scope.callDrawsvg(properties.ul_curr, document.querySelector('.current-ul-line path'));
+    };
 
+    $scope.$on('leafletDirectiveMap.geojsonMouseover', function (ev, leafletEvent) {
+      $scope.updateSiteInfo(leafletEvent.target.feature)
+    });
+    $scope.$on('leafletDirectiveMap.geojsonClick', function (ev, featureSelected, leafletEvent) {
+      $scope.updateSiteInfo(featureSelected);
     });
 
 
