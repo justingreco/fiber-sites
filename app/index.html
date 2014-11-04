@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
+  <title>City of Raleigh Fiber Sites</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -18,9 +18,6 @@
   <script src="bower_components/bootstrap/dist/css/bootstrap.min.css"></script>
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-  <!-- Dimple and D3 -->
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="http://dimplejs.org/dist/dimple.v2.1.0.min.js"></script>
 </head>
 <body>
 <!--   <ul class="menu">
@@ -35,61 +32,70 @@
 <!--   <div ng-view></div>
 
   <div>Angular seed app: v<span app-version></span></div> -->
-  <div style="height:100%;width:100%;" ng-controller="MapController">
+  <div style="width:100%;" ng-controller="MapController">
     <leaflet id="map" center="raleigh" tiles="tiles" geojson="geojson"></leaflet> 
     <div id="info">
-      <div class="row">
-        <div class="col-sm-6">
-          <span class="lead">{{site}}</span>
-          <p><img class="logo" ng-src="{{provider}}"/></p>
-          <p>Current Cost: ${{currentCost}}/month</p>
-          <p>Proposed Cost: ${{futureCost}}/month</p>
-        </div>
-        <div class="col-sm-6">
 
-          <span><u>Proposed</u>
-          </span>
-          <br/>
-          <span>Download: {{proposed_dl}}mbps</span>
-          <svg class="proposed-dl-line" height="5px">
-            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-          </svg>
-          <br/>
-          <span>Upload: {{proposed_ul}}mbps</span>
-          <svg class="proposed-ul-line" height="5px">
-            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-          </svg>
-          <p/>
-          <span><u>Current</u>
-          </span>
-          <br/>
-          <span>Download: {{current_dl}}mbps</span>
-          <svg class="current-dl-line" height="5px">
-            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-          </svg>
-          <br/>
-          <span>Upload: {{current_ul}}mbps</span>
-          <svg class="current-ul-line" height="5px">
-            <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-          </svg>          
+      <span ng-hide="showInfo" class="lead">Click or hover over site on map or select site name form list</span>
+      <select class="form-control" ng-model="selectedSite" ng-options="feature.properties.site for feature in geojson.data.features | orderBy:'properties.site'" ng-change="siteSelected()"></select>
+      <div ng-show="showInfo">
+        <div class="row">
+          <div class="col-sm-6" ng-hide="selectedSite.properties.provider == 'City of Raleigh'">
+        
+            <div class="title"><h4>Current Provider</h4><p><img class="logo" ng-src="{{provider}}"/></p></div>
+
+            <p><strong><u>Current</u></strong></p>
+            <p>{{selectedSite.properties.cost_curr | currency}}/month</p>
+            <span>Download: {{selectedSite.properties.dl_curr}}mbps</span>
+            <svg class="current-dl-line" height="5px">
+              <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+            </svg>
+            <br/>
+            <span>Upload: {{selectedSite.properties.ul_curr}}mbps</span>
+            <svg class="current-ul-line" height="5px">
+              <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+            </svg>
+
+            <p><strong><u>Proposed</u></strong></p>
+            <p>{{selectedSite.properties.cost_fut | currency}}/month</p>
+            <span>Download: {{selectedSite.properties.dl_fut}}mbps</span>
+            <svg class="proposed-dl-line" height="5px">
+              <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+            </svg>
+            <br/>
+            <span>Upload: {{selectedSite.properties.ul_fut}}mbps</span>
+            <svg class="proposed-ul-line" height="5px">
+              <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+            </svg>
+
+          </div>
+          <div class="col-sm-6">
+            <h4>City of Raleigh</h4>
+            <img class="logo" ng-src="{{raleighSrc}}"/>
+            <p>{{raleighCost | currency}}/month</p>
+            <span>Download: {{raleigh_dl}}mbps</span>
+            <svg class="raleigh-dl-line" height="5px">
+              <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+            </svg>
+            <br/>
+            <span>Upload: {{raleigh_ul}}mbps</span>
+            <svg class="raleigh-ul-line" height="5px">
+              <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+            </svg>     
+          </div>
         </div>
+
       </div>
-
     </div>
   </div>
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-
-
-
-
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="bower_components/angular-leaflet/dist/angular-leaflet-directive.min.js"></script>
-  <script src="bower_components/angular-dimple/dist/angular-dimple.min.js"></script>
   
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
