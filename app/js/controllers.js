@@ -65,7 +65,7 @@ angular.module('myApp.controllers', [])
       }
       angular.extend($scope, {
       provider: provider,
-      raleighCost: 270,
+      raleighCost: 570,
       raleigh_ul: 1000,
       raleigh_dl: 1000,
       raleighSrc: "img/raleigh.png",
