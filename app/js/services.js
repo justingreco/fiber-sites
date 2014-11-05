@@ -1,13 +1,12 @@
 'use strict';
-
 /* Services */
-
-
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', []).
   value('version', '0.1')
   .factory('drawsvg', [function () {
+  	//Code taken from the following blog:
+  	//http://jakearchibald.com/2013/animated-line-drawing-svg/
   	return function (speed, path) {
   		path.style.display = 'block';
 		var length = path.getTotalLength();
@@ -21,7 +20,6 @@ angular.module('myApp.services', []).
 		// picks up the starting position before animating
 		path.getBoundingClientRect();
 		// Define our transition
-
 		var time = 1000/speed;
 		if (speed === 0) {
 			time = 0;
@@ -32,5 +30,4 @@ angular.module('myApp.services', []).
 		// Go!
 		path.style.strokeDashoffset = '0';
   	}
-
   }]);
