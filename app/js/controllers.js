@@ -1,7 +1,5 @@
 'use strict';
-
 /* Controllers */
-
 angular.module('myApp.controllers', [])
   .controller('MapController', ['$scope', '$http', 'leafletData', 'drawsvg', function($scope, $http, leafletData, drawsvg) {
     angular.extend($scope, {
@@ -17,7 +15,6 @@ angular.module('myApp.controllers', [])
       sites: []
     });
     $http.get("data/fiber.geojson").success(function(data, status) {
-
         angular.extend($scope, {
             geojson: {
                 data: data,
@@ -37,20 +34,17 @@ angular.module('myApp.controllers', [])
                           break;
                       }
                       $scope.sites.push(feature.properties.site);
-                      return new L.marker(latlng, {icon: L.icon({iconUrl:iconUrl, iconRetina:iconRetinaUrl})});
-                  
+                      return new L.marker(latlng, {icon: L.icon({iconUrl:iconUrl, iconRetina:iconRetinaUrl})});     
                 }
             }
         });
     });
-
     $scope.siteSelected = function () {
       $scope.updateSiteInfo($scope.selectedSite);
       leafletData.getMap().then(function(map) {
-          map.setView($scope.selectedSite.geometry.coordinates, 16);
+          map.setView([$scope.selectedSite.geometry.coordinates[1], $scope.selectedSite.geometry.coordinates[0]], 16);
       });
     };
-
     $scope.updateSiteInfo = function (feature) {
       $scope.selectedSite = feature;
      var properties = feature.properties,
@@ -74,20 +68,21 @@ angular.module('myApp.controllers', [])
       $scope.callDrawsvg = function (speed, path) {
         drawsvg(speed, path);
       };
-      $scope.callDrawsvg(properties.dl_fut, document.querySelector('.proposed-dl-line path'));
-      $scope.callDrawsvg(properties.dl_curr, document.querySelector('.current-dl-line path'));
-      $scope.callDrawsvg(properties.ul_fut, document.querySelector('.proposed-ul-line path'));
-      $scope.callDrawsvg(properties.ul_curr, document.querySelector('.current-ul-line path'));
-      $scope.callDrawsvg(1000, document.querySelector('.raleigh-dl-line path'));
-      $scope.callDrawsvg(1000, document.querySelector('.raleigh-ul-line path'));
-    };
 
+      window.setTimeout( function () {
+        $scope.callDrawsvg($scope.selectedSite.properties.dl_fut, document.querySelector('.proposed-dl-line path'));
+        $scope.callDrawsvg($scope.selectedSite.properties.dl_curr, document.querySelector('.current-dl-line path'));
+        $scope.callDrawsvg($scope.selectedSite.properties.ul_fut, document.querySelector('.proposed-ul-line path'));
+        $scope.callDrawsvg($scope.selectedSite.properties.ul_curr, document.querySelector('.current-ul-line path'));
+        $scope.callDrawsvg(1000, document.querySelector('.raleigh-dl-line path'));
+        $scope.callDrawsvg(1000, document.querySelector('.raleigh-ul-line path'));
+      }, 100);
+
+    };
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function (ev, leafletEvent) {
       $scope.updateSiteInfo(leafletEvent.target.feature)
     });
     $scope.$on('leafletDirectiveMap.geojsonClick', function (ev, featureSelected, leafletEvent) {
       $scope.updateSiteInfo(featureSelected);
     });
-
-
   }]);
