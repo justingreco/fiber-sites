@@ -72,10 +72,15 @@ angular.module('myApp.controllers', [])
       window.setTimeout( function () {
         $scope.callDrawsvg($scope.selectedSite.properties.dl_fut, document.querySelector('.proposed-dl-line path'));
         $scope.callDrawsvg($scope.selectedSite.properties.dl_curr, document.querySelector('.current-dl-line path'));
-        $scope.callDrawsvg($scope.selectedSite.properties.ul_fut, document.querySelector('.proposed-ul-line path'));
-        $scope.callDrawsvg($scope.selectedSite.properties.ul_curr, document.querySelector('.current-ul-line path'));
+/*        $scope.callDrawsvg($scope.selectedSite.properties.ul_fut, document.querySelector('.proposed-ul-line path'));
+        $scope.callDrawsvg($scope.selectedSite.properties.ul_curr, document.querySelector('.current-ul-line path'));*/
         $scope.callDrawsvg(1000, document.querySelector('.raleigh-dl-line path'));
-        $scope.callDrawsvg(1000, document.querySelector('.raleigh-ul-line path'));
+        /*$scope.callDrawsvg(1000, document.querySelector('.raleigh-ul-line path'));*/
+
+        if ($scope.selectedSite.properties.site == 'Lake Woodard Campus') {
+          $scope.callDrawsvg(50, document.querySelector('.temp-dl-line path'));
+        }
+
       }, 100);
 
     };

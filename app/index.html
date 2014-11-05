@@ -32,7 +32,7 @@
 <!--   <div ng-view></div>
 
   <div>Angular seed app: v<span app-version></span></div> -->
-  <div style="width:100%;" ng-controller="MapController">
+  <div style="width:100%;height:100%;" ng-controller="MapController">
     <leaflet id="map" center="raleigh" tiles="tiles" geojson="geojson"></leaflet> 
     <div id="info">
 
@@ -42,46 +42,56 @@
         <div class="row">
           <div class="col-sm-6" ng-hide="selectedSite.properties.provider == 'City of Raleigh'">
         
-            <div class="title"><h4>Current Provider</h4><p><img class="logo" ng-src="{{provider}}"/></p></div>
+            <div class="title"><h4>Current Provider</h4><p><img class="logo" ng-src="{{provider}}"/></p>
+            <img class="logo" ng-show="selectedSite.properties.site == 'Lake Woodard Campus'"
+            src='img/twc.png' style="position: absolute;left: 100px;bottom: 220px;"/>
+            </div>
 
             <p><strong><u>Current</u></strong></p>
             <p>{{selectedSite.properties.cost_curr | currency}}/month</p>
-            <span>Download: {{selectedSite.properties.dl_curr}}mbps</span>
+            <span><!-- Download:  -->{{selectedSite.properties.dl_curr}}mbps <span ng-show="selectedSite.properties.site == 'Lake Woodard Campus'">(AT&amp;T)</span></span>
             <svg class="current-dl-line" height="5px">
               <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
             </svg>
             <br/>
-            <span>Upload: {{selectedSite.properties.ul_curr}}mbps</span>
-            <svg class="current-ul-line" height="5px">
+            <div  ng-show="selectedSite.properties.site == 'Lake Woodard Campus'">
+             <span>50mbps (TWC)</span>
+            <svg class="temp-dl-line" height="5px">
               <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
             </svg>
+            </div>
+            <br/>            
+<!--             <span>Upload: {{selectedSite.properties.ul_curr}}mbps</span>
+            <svg class="current-ul-line" height="5px">
+              <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
+            </svg> -->
 
             <p><strong><u>Proposed</u></strong></p>
             <p>{{selectedSite.properties.cost_fut | currency}}/month</p>
-            <span>Download: {{selectedSite.properties.dl_fut}}mbps</span>
+            <span><!-- Download:  -->{{selectedSite.properties.dl_fut}}mbps</span>
             <svg class="proposed-dl-line" height="5px">
               <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
             </svg>
             <br/>
-            <span>Upload: {{selectedSite.properties.ul_fut}}mbps</span>
+<!--             <span>Upload: {{selectedSite.properties.ul_fut}}mbps</span>
             <svg class="proposed-ul-line" height="5px">
               <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-            </svg>
+            </svg> -->
 
           </div>
           <div class="col-sm-6">
             <h4>City of Raleigh</h4>
             <img class="logo" ng-src="{{raleighSrc}}"/>
             <p>{{raleighCost | currency}}/month</p>
-            <span>Download: {{raleigh_dl}}mbps</span>
+            <span><!-- Download:  -->{{raleigh_dl}}mbps</span>
             <svg class="raleigh-dl-line" height="5px">
               <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
             </svg>
             <br/>
-            <span>Upload: {{raleigh_ul}}mbps</span>
+<!--             <span>Upload: {{raleigh_ul}}mbps</span>
             <svg class="raleigh-ul-line" height="5px">
               <path d="M 0,0 H 300 V 0" style="stroke: #000; stroke-width: 5px; display: none"></path>
-            </svg>     
+            </svg>   -->   
           </div>
         </div>
 
