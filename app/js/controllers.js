@@ -47,7 +47,7 @@ angular.module('myApp.controllers', [])
     $scope.siteSelected = function () {
       $scope.updateSiteInfo($scope.selectedSite);
       leafletData.getMap().then(function(map) {
-          map.setView($scope.selectedSite.geometry.coordinates.reverse(), 16);
+          map.setView($scope.selectedSite.geometry.coordinates, 16);
       });
     };
 
